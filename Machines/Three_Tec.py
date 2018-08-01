@@ -10,7 +10,7 @@ twin_screw_plc = 'TSWG.PLC.'
 feeder_plc = 'Feeder.PLC.'
 
 
-##Tiwn_Screw Controls##
+##Twin_Screw Controls##
 ts_start_stop = 'Granulator_Z12_StartStop'
 ts_remote_mode = 'Granulator_ControlMode'
 ts_Z12_speed_set = 'Granulator_Z12_Speed_SP'
@@ -95,8 +95,8 @@ f_WD_out = 'Feeder_Watchdog_Out'
 ##Initialise OPC Connection with Twin Screw Class##
 ####################
 
-class twinscrew: 
-	def __init__(self): 
+class twinscrew:
+	def __init__(self):
 		self.opc = OpenOPC.client()
 		self.opc.connect(server_name)
 
@@ -177,10 +177,10 @@ class twinscrew:
 	##################
 
 	global ts_process_tags
-	ts_process_tags = [twin_screw_plc+ts_current_speed_Z12, 
-	twin_screw_plc+ts_current_running, 
+	ts_process_tags = [twin_screw_plc+ts_current_speed_Z12,
+	twin_screw_plc+ts_current_running,
 	twin_screw_plc+ts_current_speed_rpm,
-	twin_screw_plc+ts_Z12_speed_sp,	
+	twin_screw_plc+ts_Z12_speed_sp,
 	twin_screw_plc+ts_current_torque_Z12,
 	twin_screw_plc+ts_die_Presuure,
 	twin_screw_plc+ts_error_reset,
@@ -209,18 +209,18 @@ class twinscrew:
 
 	def read_values_initial(self):
 		return  pd.DataFrame(self.opc.read(ts_process_tags))
-		
-		def read_values(self):
+
+	def read_values(self):
 		return  pd.DataFrame(self.opc(ts_process_tags))
-	
-	
-	
+
+
+
 ####################
 ##Initialise OPC Connection with Feeder Class##
 ####################
 
-class feeder: 
-	def __init__(self): 
+class feeder:
+	def __init__(self):
 		self.opc = OpenOPC.client()
 		self.opc.connect(server_name)
 
@@ -236,49 +236,32 @@ class feeder:
 
 	def start(self):
 		self.opc.write((feeder_plc+f_start_stop, 1))
-		
+
 	def stop(self):
 		self.opc.write((feeder_plc+f_start_stop, 0))
-		
+
 	def set_rate(self, rate):
 		self.opc.write((feeder_plc+f_flow_set, rate))
-	
-	
+
+
 	##################
 	##Define Read Functions##
 	##################
 
 	global f_process_tags
-	f_process_tags = [feeder_plc+f_current_weight, 
-	feeder_plc+f_current_speed_rpm, 
-	feeder_plc+f_current_speed_percent, 
-	feeder_plc+f_hopper_level, 
-	feeder_plc+f_flow_rate_SP_read, 
+	f_process_tags = [feeder_plc+f_current_weight,
+	feeder_plc+f_current_speed_rpm,
+	feeder_plc+f_current_speed_percent,
+	feeder_plc+f_hopper_level,
+	feeder_plc+f_flow_rate_SP_read,
 	feeder_plc+f_raw_flow_PV,
-	feeder_plc+f_HMI_flow_PV, 
-	feeder_plc+f_controller_flow_PV, 
-	feeder_plc+f_deviation, 
+	feeder_plc+f_HMI_flow_PV,
+	feeder_plc+f_controller_flow_PV,
+	feeder_plc+f_deviation,
 	feeder_plc+f_stable]
 
 	def read_values_initial(self):
 		return  pd.DataFrame(self.opc.read(f_process_tags))
-		
-		def read_values(self):
+
+	def read_values(self):
 		return  pd.DataFrame(self.opc(f_process_tags))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
